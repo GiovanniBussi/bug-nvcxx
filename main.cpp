@@ -22,6 +22,8 @@ int main() {
   double mbest,mtrial;
   std::array<double,3> best;
   std::array<double,3> trial;
+  int x2best=1000;
+  int x1best=1000;
   best[0]=best[1]=best[2]=0.0;
   trial[0]=trial[1]=trial[2]=0.0;
   for(int x1=x1min; x1<=x1max; x1++) {
@@ -35,12 +37,22 @@ int main() {
         best[0]=trial[0];
         best[1]=trial[1];
         best[2]=trial[2];
+        x2best=x2;
+        x1best=x1;
         first=false;
       }
     }
   }
-  std::cout<<"0 0 0 would be an error:\n";
+  std::cout<<"0 0 0 would be an error:  ";
   std::cout<<best[0]<<" "<<best[1]<<" "<<best[2]<<"\n";
+  std::cout<<first<<" "<<x1best<<" "<<x2best<<"\n";
+  std::array<double,3> correct;
+  correct[0]=v[2][0]+x2best*v[1][0]+x1best*v[0][0];
+  correct[1]=v[2][1]+x2best*v[1][1]+x1best*v[0][1];
+  correct[2]=v[2][2]+x2best*v[1][2]+x1best*v[0][2];
+  std::cout<<correct[0]<<" "<<correct[1]<<" "<<correct[2]<<"\n";
+  std::cout<<trial[0]<<" "<<trial[1]<<" "<<trial[2]<<"\n";
+  
 
   return 0;
 }
