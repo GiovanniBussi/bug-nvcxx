@@ -4,6 +4,7 @@
 
 int main() {
   std::array<std::array<double,3>,3> v;
+  // this was the original set:
   v[0][0]=10.0;
   v[0][1]=0.0;
   v[0][2]=10.0;
@@ -14,6 +15,16 @@ int main() {
   v[2][1]=10.0;
   v[2][2]=10.0;
 
+  // however, also setting everything to zero triggers the bug
+  v[0][0]=0.0;
+  v[0][1]=0.0;
+  v[0][2]=0.0;
+  v[1][0]=0.0;
+  v[1][1]=0.0;
+  v[1][2]=0.0;
+  v[2][0]=0.0;
+  v[2][1]=0.0;
+  v[2][2]=0.0;
   int x1min=std::floor(-0.5);
   int x1max=x1min+1;
   int x2min=std::floor(-0.5);
@@ -22,10 +33,8 @@ int main() {
   double mbest,mtrial;
   std::array<double,3> best;
   std::array<double,3> trial;
-  int x2best=1000;
-  int x1best=1000;
-  best[0]=best[1]=best[2]=0.0;
-  trial[0]=trial[1]=trial[2]=0.0;
+  best[0]=best[1]=best[2]=1000.0;
+  trial[0]=trial[1]=trial[2]=1000.0;
   for(int x1=x1min; x1<=x1max; x1++) {
     for(int x2=x2min; x2<=x2max; x2++) {
       trial[0]=v[2][0]+x2*v[1][0]+x1*v[0][0];
@@ -37,22 +46,13 @@ int main() {
         best[0]=trial[0];
         best[1]=trial[1];
         best[2]=trial[2];
-        x2best=x2;
-        x1best=x1;
         first=false;
       }
     }
   }
-  std::cout<<"0 0 0 would be an error:  ";
+  std::cout<<"This should be 0: "<<first<<"\n";
+  std::cout<<"If so, none of these components can be 1000.0: ";
   std::cout<<best[0]<<" "<<best[1]<<" "<<best[2]<<"\n";
-  std::cout<<first<<" "<<x1best<<" "<<x2best<<"\n";
-  std::array<double,3> correct;
-  correct[0]=v[2][0]+x2best*v[1][0]+x1best*v[0][0];
-  correct[1]=v[2][1]+x2best*v[1][1]+x1best*v[0][1];
-  correct[2]=v[2][2]+x2best*v[1][2]+x1best*v[0][2];
-  std::cout<<correct[0]<<" "<<correct[1]<<" "<<correct[2]<<"\n";
-  std::cout<<trial[0]<<" "<<trial[1]<<" "<<trial[2]<<"\n";
-  
 
   return 0;
 }
