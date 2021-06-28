@@ -38,14 +38,14 @@ int main() {
   for(int x1=x1min; x1<=x1max; x1++) {
     for(int x2=x2min; x2<=x2max; x2++) {
       trial[0]=v[2][0]+x2*v[1][0]+x1*v[0][0];
-      trial[1]=v[2][1]+x2*v[1][1]+x1*v[0][1];
-      trial[2]=v[2][2]+x2*v[1][2]+x1*v[0][2];
+      trial[1]=v[2][1]+x2*v[1][1]+x1*v[0][1]; // <-
+      trial[2]=v[2][2]+x2*v[1][2]+x1*v[0][2]; // <-
       mtrial=trial[0]*trial[0]+trial[1]*trial[1]+trial[2]*trial[2];
       if(first || mtrial<mbest) {
         mbest=mtrial;
         best[0]=trial[0];
-        best[1]=trial[1];
-        best[2]=trial[2];
+        best[1]=trial[1]; // <-
+        best[2]=trial[2]; // <-
         first=false;
       }
     }
@@ -53,6 +53,8 @@ int main() {
   std::cout<<"This should be 0: "<<first<<"\n";
   std::cout<<"If so, none of these components can be 1000.0: ";
   std::cout<<best[0]<<" "<<best[1]<<" "<<best[2]<<"\n";
+  // if any of these components is ==1000.0, it means that some components of best[] have not been set
+  // this should not happen, see marked lines above
 
   return 0;
 }
